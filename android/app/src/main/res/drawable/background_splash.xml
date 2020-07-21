@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/background" />
+    <item
+        android:width="200dp"
+        android:height="70dp"
+        android:drawable="@drawable/doojob_icon"
+        android:gravity="center" />
+
+</layer-list>
