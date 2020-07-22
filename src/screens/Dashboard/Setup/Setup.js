@@ -27,6 +27,7 @@ export default class SetupScreen extends Component {
     };
   }
   componentDidMount() {
+    this.props.Store.setCameraType("back")
     this.props.navigation.addListener('focus', () => {
       if (this.props.Store.cameraPurpose === "profilePhoto") {
         this.setState({ profilePhoto: this.props.Store?.cameraPhoto })
@@ -43,6 +44,7 @@ export default class SetupScreen extends Component {
 
   takeProfilePhoto = () => {
     this.props.Store.setCameraPurpose("profilePhoto")
+    this.props.Store.setCameraType("front")
     this.props.navigation.navigate("camera")
   }
 
@@ -178,7 +180,7 @@ const styleSheet = StyleSheet.create({
     width: "100%",
     opacity: 1,
     position: 'absolute',
-    borderRadius: normalize(20),
+    borderRadius: normalize(17),
     overflow: "hidden"
   },
   roleIcon: {

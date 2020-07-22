@@ -13,7 +13,7 @@ class AppCamera extends Component {
     super(props);
     this.state = {
       flashMode: RNCamera.Constants.FlashMode.off,
-      type: RNCamera.Constants.Type.back,
+      type: this.props.Store.cameraType || RNCamera.Constants.Type.back,
     };
   }
 
