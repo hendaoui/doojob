@@ -49,11 +49,11 @@ export default class SetupScreen extends Component {
   }
 
   verifyAccount() {
-    this.setState({ step: 2 })
-    if (this.state.step === 2) {
+    // this.setState({ step: 2 })
+    // if (this.state.step === 2) {
       this.setState({ showModal: true })
       console.log(">>>>", this.state);
-    }
+    // }
   }
 
   componentWillUnmount() {
@@ -105,6 +105,10 @@ export default class SetupScreen extends Component {
 
     return (
       <>
+      <AppModal status="success" title="Congratulations!" description="Your accout is ready to use."
+                  visible={this.state.showModal}
+                  onPress={() => { this.setState({ showModal: false }) }}
+                />
         <View style={styles.screenWrapperWithRadius}>
           <ScrollView style={styles.scrollView}>
             <AppText style={{ ...styles.screenTitle, marginTop: normalize(30) }}>Setup Your Account</AppText>
@@ -129,10 +133,10 @@ export default class SetupScreen extends Component {
                 </TouchableOpacity>
               </> :
               <>
-                <AppModal status="success" title="Congratulations!" description="Your accout is ready to use."
+                {/* <AppModal status="success" title="Congratulations!" description="Your accout is ready to use."
                   visible={this.state.showModal}
                   onPress={() => { this.setState({ showModal: false }) }}
-                />
+                /> */}
                 <AppText style={{ color: Colors.text, marginVertical: normalize(20) }}>Profile photo:</AppText>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <Androw style={styleSheet.shadow}>

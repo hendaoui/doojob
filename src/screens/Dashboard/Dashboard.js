@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SetupScreen from './Setup/Setup';
 import HomeScreen from './Home/Home';
+import BottomNavigation from '../../components/BottomNavigation';
 
-const DashboardScreen = ({ navigation }) => {
+class DashboardScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAccountConfirmed: true,
+    };
+  }
 
-  const renderScreen = (navigation) => {
-    const isAccountConfirmed = false;
-    if (isAccountConfirmed) {
-      return <HomeScreen navigation={navigation} />
+  renderScreen = (navigation) => {
+    if (this.state.isAccountConfirmed) {
+      return <HomeScreen navigation={navigation} />;
     } else {
-      return <SetupScreen navigation={navigation} />
+      return <SetupScreen navigation={navigation} />;
     }
   };
 
-
-  return (
-    <>
-      {renderScreen(navigation)}
-    </>
-  );
+  render() {
+    return (
+      <>
+        {this.renderScreen(this.props.navigation)}
+        {this.state.isAccountConfirmed && <BottomNavigation />}
+      </>
+    );
+  }
 }
 
 export default DashboardScreen;

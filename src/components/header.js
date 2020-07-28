@@ -24,7 +24,7 @@ const styleSheet = StyleSheet.create({
   },
 });
 
-const goBack = navigation => {
+const goBack = (navigation) => {
   if (navigation.canGoBack()) navigation.goBack(null);
 };
 
@@ -33,23 +33,27 @@ const Header = ({
   title = nvg.name || '',
   icon,
   transparent,
+  noIcon,
+  screenTitle,
   onPress = () => goBack(nvg),
 }) => {
   if (transparent) {
     styles.header = {...styles.header, backgroundColor: 'transparent'};
-    styleSheet.icon = {...styleSheet.icon, color: 'white'}
+    styleSheet.icon = {...styleSheet.icon, color: 'white'};
   }
   if (!icon) styleSheet.icon = {...styleSheet.icon, ...styleSheet.backIcon};
   return (
     <View style={styles.header}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-        <Icon
-          name={icon || 'chevron-left'}
-          size={normalize(35)}
-          style={styleSheet.icon}
-        />
+        {!noIcon && (
+          <Icon
+            name={icon || 'chevron-left'}
+            size={normalize(35)}
+            style={styleSheet.icon}
+          />
+        )}
       </TouchableOpacity>
-      <AppText style={styleSheet.text}>{title}</AppText>
+      <AppText style={[styleSheet.text, screenTitle && styles.screenTitle]}>{title}</AppText>
     </View>
   );
 };

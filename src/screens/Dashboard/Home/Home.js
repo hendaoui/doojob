@@ -18,10 +18,12 @@ export default class HomeScreen extends Component {
     return (
       <>
         <AppSpinner />
-        <Header nvg={{ ...navigation }} />
-        <View style={styles.screenWrapper}>
+        <View style={styles.screenWrapperWithRadius}>
           <ScrollView style={styles.scrollView}>
-            <AppText style={{ ...styles.screenTitle, marginTop: normalize(20) }}>Home</AppText>
+          <Header nvg={{ ...navigation }} title="Home" noIcon screenTitle/>
+            <View style={{backgroundColor: "red", height: 500}}></View>
+            <View style={{backgroundColor: "blue", height: 500}}></View>
+            <View style={{backgroundColor: "green", height: 500}}></View>
           </ScrollView>
         </View>
       </>

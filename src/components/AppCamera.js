@@ -34,7 +34,7 @@ class AppCamera extends Component {
   }
 
   takePicture = async function (camera) {
-    const options = { quality: 1, base64: true };
+    const options = { quality: 1, base64: true, mirrorImage: this.state.type === "front", fixOrientation: true };
     const data = await camera.takePictureAsync(options);
     if (data?.base64) {
       this.props.Store.saveCameraPhoto(data?.base64)
