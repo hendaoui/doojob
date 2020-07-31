@@ -121,6 +121,7 @@ class RegisterScreen extends React.Component {
         <AppInput
           label="Email"
           value={email}
+          autoCapitalize = 'none'
           onChange={(val) => this.setState({email: val})}
         />
         <AppInput

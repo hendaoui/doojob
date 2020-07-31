@@ -7,6 +7,8 @@ import AppModal from '../../components/AppModal';
 var empty = require('is-empty');
 import axios from 'axios';
 import {apiConfig} from '../../helpers/apiConfig';
+import AsyncStorage from '@react-native-community/async-storage';
+import jwt_decode from 'jwt-decode';
 
 @inject('Store')
 @observer
@@ -16,7 +18,6 @@ class LoginScreen extends React.Component {
     this.state = {
       email: '',
       password: '',
-      isValidForm: '',
       showModal: false,
       modalDescription: '',
     };
@@ -32,8 +33,14 @@ class LoginScreen extends React.Component {
       })
       .then((response) => {
         this.props.Store.toggleSpinner(false);
-        console.log(response);
-        this.props.navigation.replace('dashboard');
+        try {
+          AsyncStorage.setItem('accessToken', response.data.accessToken).then(() => {
+            let data = jwt_decode(response.data.accessToken);
+            AsyncStorage.setItem('userData', JSON.stringify(data)).then(() => {
+              this.props.navigation.replace('dashboard');
+            });
+          });
+        } catch (error) {}
       })
       .catch((error) => {
         this.props.Store.toggleSpinner(false);
@@ -67,6 +74,7 @@ class LoginScreen extends React.Component {
         <AppInput
           label="Email"
           value={email}
+          autoCapitalize = 'none'
           onChange={(val) => this.setState({email: val})}
         />
         <AppInput

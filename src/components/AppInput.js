@@ -31,7 +31,7 @@ const AppInput = ({
   }
 
   return (
-    <View {...props} style={{ marginBottom: normalize(5) }}>
+    <View style={{ marginBottom: normalize(5) }}>
       <AppText style={{ color: colors.text, fontFamily: 'Poppins-SemiBold', marginBottom: normalize(5) }}>{label}</AppText>
       <Androw style={styleSheet.shadow}>
         <TextInput
@@ -41,6 +41,7 @@ const AppInput = ({
           selectionColor={Colors.lightBlue}
           secureTextEntry={type === "password" && !show}
           keyboardType={type === "number" ? "numeric" : "default"}
+          {...props}
         />
         {
           type === "password" &&

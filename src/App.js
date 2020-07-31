@@ -14,12 +14,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import OnBoardingScreen from './screens/onBoarding/onBoarding';
 import RNSplashScreen from 'react-native-splash-screen'
 import AuthScreen from './screens/auth/auth';
-import Spinner from 'react-native-loading-spinner-overlay';
-import colors from './helpers/colors';
 import { Provider } from 'mobx-react';
 import Store from './Stores/Store';
 import DashboardScreen from './screens/Dashboard/Dashboard';
-import SetupScreen from './screens/Dashboard/Setup/Setup';
 import AppCamera from './components/AppCamera';
 import axios from 'axios';
 import { apiConfig } from './helpers/apiConfig';

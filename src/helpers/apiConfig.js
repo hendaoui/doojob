@@ -5,5 +5,9 @@ export const apiConfig = {
       LOGIN: 'auth/signin',
       REGISTER: 'auth/signup',
     },
+    PROFILE: {
+      VERIFY_ACCOUNT: "user/verify_account"
+    }
   },
 };
+
