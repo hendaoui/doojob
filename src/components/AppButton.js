@@ -1,7 +1,7 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import styles from '../helpers/styles';
 import AppText from './AppText';
+import { TouchableHighlight } from 'react-native';
 
 const AppButton = ({
   onPress,
@@ -14,8 +14,9 @@ const AppButton = ({
 }) => {
   outline && size !== 'sm' ? position = 'center' : null;
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <TouchableHighlight
+      activeOpacity={0.6}
+      underlayColor='none'
       onPress={disabled ? () => { } : onPress}
       style={[
         styles.appButtonContainer,
@@ -33,7 +34,7 @@ const AppButton = ({
         ]}>
         {title}
       </AppText>
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 };
 

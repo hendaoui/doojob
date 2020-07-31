@@ -21,6 +21,8 @@ import Store from './Stores/Store';
 import DashboardScreen from './screens/Dashboard/Dashboard';
 import SetupScreen from './screens/Dashboard/Setup/Setup';
 import AppCamera from './components/AppCamera';
+import axios from 'axios';
+import { apiConfig } from './helpers/apiConfig';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -36,6 +38,7 @@ class App extends React.Component {
 
   componentDidMount() {
     RNSplashScreen.hide();
+    axios.defaults.baseURL = apiConfig.baseUrl;
   }
 
   render() {
