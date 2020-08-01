@@ -20,6 +20,8 @@ import DashboardScreen from './screens/Dashboard/Dashboard';
 import AppCamera from './components/AppCamera';
 import axios from 'axios';
 import { apiConfig } from './helpers/apiConfig';
+import NotificationsScreen from './screens/Dashboard/notifications/notifications'
+import IssueDetails from './screens/Dashboard/issueDetails/issueDetails';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -53,6 +55,8 @@ class App extends React.Component {
               <Stack.Screen name="auth" component={AuthScreen} />
               <Stack.Screen name="dashboard" component={DashboardScreen} />
               <Stack.Screen name="camera" component={AppCamera} />
+              <Stack.Screen name="notifications" component={NotificationsScreen} />
+              <Stack.Screen name="issueDetails" component={IssueDetails} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

@@ -10,6 +10,7 @@ export const apiConfig = {
     },
     ISSUE: {
       LIST: "issue/list",
+      GET_ISSUE_BY_ID: "issue/",
       CREATE: "issue/create",
     }
   },

@@ -58,10 +58,10 @@ export default class HomeScreen extends Component {
                 }}
               />
             }>
-            <Header nvg={{...navigation}} title="Home" noIcon screenTitle />
+            <Header nvg={{...navigation}} title="Home" noIcon screenTitle showNotifications />
             {this.props.Store.issuesList ? (
               this.props.Store.issuesList?.map((issue) => {
-                return <IssueCard key={issue?._id} details={issue} />;
+                return <IssueCard key={issue?._id} details={issue} navigation={this.props.navigation} />;
               })
             ) : (
               <>

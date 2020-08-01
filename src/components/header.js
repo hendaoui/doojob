@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import normalize from 'react-native-normalize';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '../helpers/colors';
+var ellipsis = require('text-ellipsis');
 
 const styleSheet = StyleSheet.create({
   icon: {
@@ -36,6 +37,7 @@ const Header = ({
   transparent,
   noIcon,
   screenTitle,
+  showNotifications = false,
   onPress = () => goBack(nvg),
 }) => {
   if (transparent) {
@@ -45,8 +47,8 @@ const Header = ({
   if (!icon) styleSheet.icon = {...styleSheet.icon, ...styleSheet.backIcon};
   return (
     <View
-      style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-      <View style={(styles.header, {width: '90%'})}>
+      style={showNotifications && {flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={showNotifications ? {width: "90%"} : styles.header}>
         <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
           {!noIcon && (
             <Icon
@@ -56,31 +58,29 @@ const Header = ({
             />
           )}
         </TouchableOpacity>
-        <AppText style={[styleSheet.text, screenTitle && styles.screenTitle]}>
-          {title}
+        <AppText style={[styleSheet.text, transparent && {color: 'white'},  {bottom: - normalize(5)}, screenTitle && styles.screenTitle]}>
+          {ellipsis(title, 25)}
         </AppText>
       </View>
-      <View>
-        <Icon
-          name={'bell'}
-          size={normalize(30)}
-          style={styleSheet.icon}
-          onPress={() => nvg.navigate('notifications')}
-        />
-        {
-          
-        }
-        <View
-          style={{
-            backgroundColor: colors.blue,
-            height: normalize(12),
-            width: normalize(12),
-            borderRadius: 50,
-            position: 'absolute',
-            top: normalize(16),
-            left: normalize(10)
-          }}></View>
+      {
+        showNotifications &&
+        <View>
+        <TouchableOpacity onPress={() => nvg.navigate('notifications')}>
+          <Icon name={'bell'} size={normalize(30)} style={styleSheet.icon} />
+          <View
+            style={{
+              backgroundColor: colors.blue,
+              height: normalize(12),
+              width: normalize(12),
+              borderRadius: 50,
+              position: 'absolute',
+              top: normalize(16),
+              left: normalize(10),
+            }}
+          />
+        </TouchableOpacity>
       </View>
+      }
     </View>
   );
 };

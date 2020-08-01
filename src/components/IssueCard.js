@@ -9,9 +9,12 @@ var ellipsis = require('text-ellipsis');
 
 export default class IssueCard extends Component {
   render() {
-    const {details} = this.props;
+    const {details, navigation} = this.props;
     return (
-      <TouchableOpacity activeOpacity={0.8} style={{marginBottom: normalize(15)}}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={{marginBottom: normalize(15)}}
+        onPress={() => navigation.navigate('issueDetails', {id: details?._id, title: details?.title})}>
         <View style={styleSheet.container}>
           <ImageBackground
             source={

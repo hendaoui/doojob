@@ -79,6 +79,7 @@ const header = {
   flexDirection: 'row',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
+  zIndex: 999
 };
 
 const scrollView = {
