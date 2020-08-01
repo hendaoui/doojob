@@ -7,6 +7,10 @@ export const apiConfig = {
     },
     PROFILE: {
       VERIFY_ACCOUNT: "user/verify_account"
+    },
+    ISSUE: {
+      LIST: "issue/list",
+      CREATE: "issue/create",
     }
   },
 };

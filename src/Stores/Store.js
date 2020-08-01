@@ -6,6 +6,7 @@ class AppStore {
   @observable cameraPurpose = null;
   @observable currentUser = null;
   @observable accessToken = null;
+  @observable issuesList = [];
 
   @action toggleSpinner(state) {
     this.showSpinner = state;
@@ -29,6 +30,10 @@ class AppStore {
   
   @action setAccessToken(token = null) {
     this.accessToken = token;
+  }
+
+  @action setIssuesList(list = []) {
+    this.issuesList = list;
   }
 }
 

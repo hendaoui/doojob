@@ -5,6 +5,7 @@ import AppText from './AppText';
 import Icon from 'react-native-vector-icons/Feather';
 import normalize from 'react-native-normalize';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import colors from '../helpers/colors';
 
 const styleSheet = StyleSheet.create({
   icon: {
@@ -43,17 +44,43 @@ const Header = ({
   }
   if (!icon) styleSheet.icon = {...styleSheet.icon, ...styleSheet.backIcon};
   return (
-    <View style={styles.header}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-        {!noIcon && (
-          <Icon
-            name={icon || 'chevron-left'}
-            size={normalize(35)}
-            style={styleSheet.icon}
-          />
-        )}
-      </TouchableOpacity>
-      <AppText style={[styleSheet.text, screenTitle && styles.screenTitle]}>{title}</AppText>
+    <View
+      style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={(styles.header, {width: '90%'})}>
+        <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+          {!noIcon && (
+            <Icon
+              name={icon || 'chevron-left'}
+              size={normalize(35)}
+              style={styleSheet.icon}
+            />
+          )}
+        </TouchableOpacity>
+        <AppText style={[styleSheet.text, screenTitle && styles.screenTitle]}>
+          {title}
+        </AppText>
+      </View>
+      <View>
+        <Icon
+          name={'bell'}
+          size={normalize(30)}
+          style={styleSheet.icon}
+          onPress={() => nvg.navigate('notifications')}
+        />
+        {
+          
+        }
+        <View
+          style={{
+            backgroundColor: colors.blue,
+            height: normalize(12),
+            width: normalize(12),
+            borderRadius: 50,
+            position: 'absolute',
+            top: normalize(16),
+            left: normalize(10)
+          }}></View>
+      </View>
     </View>
   );
 };
