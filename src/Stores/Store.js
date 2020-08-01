@@ -7,6 +7,7 @@ class AppStore {
   @observable currentUser = null;
   @observable accessToken = null;
   @observable issuesList = [];
+  @observable activeTab = "home";
 
   @action toggleSpinner(state) {
     this.showSpinner = state;
@@ -34,6 +35,10 @@ class AppStore {
 
   @action setIssuesList(list = []) {
     this.issuesList = list;
+  }
+
+  @action setActiveTab(tab = 'home') {
+    this.activeTab = tab;
   }
 }
 

@@ -4,19 +4,21 @@ import normalize from 'react-native-normalize';
 import Colors from '../helpers/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
-
+import { observer, inject } from 'mobx-react';
+@inject('Store')
+@observer
 export default class BottomNavigation extends Component {
   render() {
     return (
       <View style={styleSheet.contianer}>
         <TouchableOpacity>
-          <Icon name={'home'} size={normalize(33)} style={styleSheet.icon} />
+          <Icon name={'home'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "home" && {color: Colors.blue}} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name={'map'} size={normalize(33)} style={styleSheet.icon} />
+          <Icon name={'map'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "map" && {color: Colors.blue}} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name={'user'} size={normalize(33)} style={styleSheet.icon} />
+          <Icon name={'user'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "profile" && {color: Colors.blue}} />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon
@@ -39,7 +41,6 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'space-around',
   },
   icon: {
-    color: Colors.navyBlue,
     paddingHorizontal: normalize(10),
     paddingVertical: normalize(10),
   },
