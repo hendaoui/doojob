@@ -47,9 +47,9 @@ export default class IssueDetails extends Component {
       <>
         <AppSpinner />
         <Header nvg={{...navigation}} title={route.params.title} />
-        {this.state.issue && (
-          <>
-            <View style={styles.screenWrapper}>
+        <>
+          <View style={styles.screenWrapper}>
+            {this.state.issue && (
               <ScrollView>
                 <Swiper
                   style={{height: width}}
@@ -75,18 +75,20 @@ export default class IssueDetails extends Component {
                       style={styleSheet.cover}
                     />
                   )}
-                  {(!this.state.issue?.photo1 && !this.state.issue?.photo2 && !this.state.issue?.photo3) && (
-                    <ImageBackground
-                      source={require('../../../assets/img/no-image.jpg')}
-                      style={styleSheet.cover}
-                    />
-                  )}
+                  {!this.state.issue?.photo1 &&
+                    !this.state.issue?.photo2 &&
+                    !this.state.issue?.photo3 && (
+                      <ImageBackground
+                        source={require('../../../assets/img/no-image.jpg')}
+                        style={styleSheet.cover}
+                      />
+                    )}
                 </Swiper>
                 <View style={styles.scrollView}></View>
               </ScrollView>
-            </View>
-          </>
-        )}
+            )}
+          </View>
+        </>
         <BottomNavigation />
       </>
     );
