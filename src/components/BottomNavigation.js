@@ -4,21 +4,63 @@ import normalize from 'react-native-normalize';
 import Colors from '../helpers/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
-import { observer, inject } from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 @inject('Store')
 @observer
 export default class BottomNavigation extends Component {
+  navigate = (path, tab = path) => {
+    this.props.Store.setActiveTab(tab);
+    this.props.navigation.navigate(path);
+  };
+
   render() {
     return (
       <View style={styleSheet.contianer}>
-        <TouchableOpacity>
-          <Icon name={'home'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "home" && {color: Colors.blue}} />
+        <TouchableOpacity onPress={() => this.navigate('dashboard', 'home')}>
+          <Icon
+            name={'home'}
+            size={normalize(33)}
+            style={
+              (styleSheet.icon,
+              {
+                color:
+                  this.props.Store.activeTab === 'home'
+                    ? Colors.blue
+                    : Colors.navyBlue,
+              })
+            }
+          />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name={'map'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "map" && {color: Colors.blue}} />
+        <TouchableOpacity onPress={() => this.navigate('maps')}>
+          <Icon
+            name={'map'}
+            size={normalize(33)}
+            style={
+              (styleSheet.icon,
+              {color: Colors.navyBlue},
+              {
+                color:
+                  this.props.Store.activeTab === 'maps'
+                    ? Colors.blue
+                    : Colors.navyBlue,
+              })
+            }
+          />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name={'user'} size={normalize(33)} style={styleSheet.icon, this.props.Store.activeTab === "profile" && {color: Colors.blue}} />
+        <TouchableOpacity onPress={() => this.navigate('profile')}>
+          <Icon
+            name={'user'}
+            size={normalize(33)}
+            style={
+              (styleSheet.icon,
+              {
+                color:
+                  this.props.Store.activeTab === 'profile'
+                    ? Colors.blue
+                    : Colors.navyBlue,
+              })
+            }
+          />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon

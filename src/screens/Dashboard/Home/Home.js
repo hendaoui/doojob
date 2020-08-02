@@ -18,11 +18,19 @@ export default class HomeScreen extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.onFocusFunction()
+    })
+    this.props.Store.setActiveTab('home');
     this.props.Store.toggleSpinner(true);
     setTimeout(() => {
       this.getIssuesList();
     }, 500);
+  }
+
+  onFocusFunction = () => {
+    this.props.Store.setActiveTab('home');
   }
 
   getIssuesList = () => {
@@ -58,10 +66,22 @@ export default class HomeScreen extends Component {
                 }}
               />
             }>
-            <Header nvg={{...navigation}} title="Home" noIcon screenTitle showNotifications />
+            <Header
+              nvg={{...navigation}}
+              title="Home"
+              noIcon
+              screenTitle
+              showNotifications
+            />
             {this.props.Store.issuesList ? (
               this.props.Store.issuesList?.map((issue) => {
-                return <IssueCard key={issue?._id} details={issue} navigation={this.props.navigation} />;
+                return (
+                  <IssueCard
+                    key={issue?._id}
+                    details={issue}
+                    navigation={this.props.navigation}
+                  />
+                );
               })
             ) : (
               <>

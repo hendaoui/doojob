@@ -48,7 +48,7 @@ const Header = ({
   return (
     <View
       style={showNotifications && {flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-      <View style={showNotifications ? {width: "90%"} : styles.header}>
+      <View style={showNotifications ? {...styles.header, width: "90%"} : styles.header}>
         <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
           {!noIcon && (
             <Icon
@@ -58,8 +58,8 @@ const Header = ({
             />
           )}
         </TouchableOpacity>
-        <AppText style={[styleSheet.text, transparent && {color: 'white'},  {bottom: - normalize(5)}, screenTitle && styles.screenTitle]}>
-          {ellipsis(title, 25)}
+        <AppText style={[styleSheet.text, {fontSize: normalize(20)}, transparent && {color: 'white'},  {bottom: - normalize(5)}, screenTitle && styles.screenTitle]}>
+          {ellipsis(title, 30)}
         </AppText>
       </View>
       {

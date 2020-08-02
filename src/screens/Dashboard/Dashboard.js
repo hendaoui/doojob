@@ -49,7 +49,7 @@ class DashboardScreen extends Component {
     return (
       <>
         {this.renderScreen(this.props.navigation)}
-        {this.props.Store.currentUser?.isApproved && <BottomNavigation />}
+        {this.props.Store.currentUser?.isApproved && <BottomNavigation navigation={this.props.navigation} />}
       </>
     );
   }

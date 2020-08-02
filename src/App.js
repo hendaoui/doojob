@@ -22,6 +22,7 @@ import axios from 'axios';
 import { apiConfig } from './helpers/apiConfig';
 import NotificationsScreen from './screens/Dashboard/notifications/notifications'
 import IssueDetails from './screens/Dashboard/issueDetails/issueDetails';
+import MapsScreen from './screens/Dashboard/map/maps';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -57,6 +58,7 @@ class App extends React.Component {
               <Stack.Screen name="camera" component={AppCamera} />
               <Stack.Screen name="notifications" component={NotificationsScreen} />
               <Stack.Screen name="issueDetails" component={IssueDetails} />
+              <Stack.Screen name="maps" component={MapsScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>
