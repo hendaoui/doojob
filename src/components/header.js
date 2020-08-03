@@ -10,7 +10,7 @@ var ellipsis = require('text-ellipsis');
 
 const styleSheet = StyleSheet.create({
   icon: {
-    margin: normalize(18),
+    margin: normalize(20),
     width: normalize(35),
   },
   backIcon: {
