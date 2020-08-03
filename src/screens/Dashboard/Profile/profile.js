@@ -23,6 +23,7 @@ import App from '../../../App';
 import AppModal from '../../../components/AppModal';
 import AsyncStorage from '@react-native-community/async-storage';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import moment from 'moment';
 
 const ProfileScreen = ({navigation, Store}) => {
   const [profileData, setProfileData] = useState(null);
@@ -32,6 +33,7 @@ const ProfileScreen = ({navigation, Store}) => {
     title: '',
     description: '',
   });
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     Store.setActiveTab('profile');
@@ -53,8 +55,27 @@ const ProfileScreen = ({navigation, Store}) => {
         headers: {Authorization: 'Bearer ' + Store.accessToken},
       })
       .then((response) => {
-        Store.toggleSpinner(false);
         setProfileData(response?.data);
+        getReviews();
+      })
+      .catch((error) => {
+        Store.toggleSpinner(false);
+        console.error(error);
+      });
+  };
+
+  const getReviews = () => {
+    axios
+      .get(apiConfig.API.REVIEW.LIST, {
+        headers: {Authorization: 'Bearer ' + Store.accessToken},
+      })
+      .then((response) => {
+        Store.toggleSpinner(false);
+        setReviews(
+          response.data?.filter(
+            (review) => review?.reviewee === Store.selectedProfile,
+          ),
+        );
       })
       .catch((error) => {
         Store.toggleSpinner(false);
@@ -93,11 +114,169 @@ const ProfileScreen = ({navigation, Store}) => {
 
   const {height} = Dimensions.get('window');
 
-  const HelpsRoute = () => <View style={styleSheet.scene} />;
+  const HelpsRoute = () => (
+    <View style={styleSheet.scene}>
+      {Store.issuesList.map((issue, index) => {
+        if (issue?.assignee === Store.selectedProfile) {
+          return (
+            <TouchableOpacity
+              style={styleSheet.card}
+              key={index}
+              activeOpacity={0.8}
+              onPress={() =>
+                navigation.navigate('issueDetails', {
+                  id: issue?._id,
+                  title: issue?.title,
+                })
+              }>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                }}>
+                <View style={{alignSelf: 'center'}}>
+                  <ImageBackground
+                    style={styleSheet.issueCover}
+                    source={
+                      issue?.photo1
+                        ? {uri: issue?.photo1}
+                        : require('../../../assets/img/no-image.jpg')
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: normalize(10),
+                    alignSelf: 'center',
+                  }}>
+                  <AppText style={{fontFamily: 'Poppins-SemiBold'}}>
+                    {issue?.title}
+                  </AppText>
+                  <AppText style={{fontSize: normalize(14)}}>
+                    {moment(issue?.createdAt).format('LLL')}
+                  </AppText>
+                </View>
+                <View style={{alignSelf: 'center'}}>
+                  <Icon name={'chevron-right'} size={normalize(20)} />
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        }
+      })}
+    </View>
+  );
 
-  const IssuesRoute = () => <View style={styleSheet.scene} />;
+  const IssuesRoute = () => (
+    <View style={styleSheet.scene}>
+      {Store.issuesList.map((issue, index) => {
+        if (issue?.author?.email === Store.selectedProfile) {
+          return (
+            <TouchableOpacity
+              style={styleSheet.card}
+              key={index}
+              activeOpacity={0.8}
+              onPress={() =>
+                navigation.navigate('issueDetails', {
+                  id: issue?._id,
+                  title: issue?.title,
+                })
+              }>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                }}>
+                <View style={{alignSelf: 'center'}}>
+                  <ImageBackground
+                    style={styleSheet.issueCover}
+                    source={
+                      issue?.photo1
+                        ? {uri: issue?.photo1}
+                        : require('../../../assets/img/no-image.jpg')
+                    }
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: normalize(10),
+                    alignSelf: 'center',
+                  }}>
+                  <AppText style={{fontFamily: 'Poppins-SemiBold'}}>
+                    {issue?.title}
+                  </AppText>
+                  <AppText style={{fontSize: normalize(14)}}>
+                    {moment(issue?.createdAt).format('LLL')}
+                  </AppText>
+                </View>
+                <View style={{alignSelf: 'center'}}>
+                  <Icon name={'chevron-right'} size={normalize(20)} />
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        }
+      })}
+    </View>
+  );
 
-  const ReviewsRoute = () => <View style={styleSheet.scene} />;
+  const ReviewsRoute = () => (
+    <View style={styleSheet.scene}>
+      {reviews.map((review, index) => {
+        return (
+          <View>
+            <View
+              style={{
+                flex: 0,
+                flexDirection: 'row',
+                // backgroundColor: 'red',
+                padding: normalize(10),
+              }}>
+              <View style={{alignSelf: 'center'}}>
+                <ImageBackground
+                  style={styleSheet.reviewerPhoto}
+                  source={
+                    review?.reviewer?.photo
+                      ? {uri: review?.reviewer?.photo}
+                      : require('../../../assets/img/avatar.jpg')
+                  }
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: normalize(10),
+                  alignSelf: 'center',
+                }}>
+                <AppText style={{fontFamily: 'Poppins-SemiBold'}}>
+                  {review?.reviewer?.name}
+                </AppText>
+                <AppText
+                  style={{fontSize: normalize(14), marginTop: -normalize(5)}}>
+                  {moment(review?.createdAt).format('LLL')}
+                </AppText>
+                <StarRating ratings={review?.rating || 0} />
+              </View>
+            </View>
+            <View style={styleSheet.triangle} />
+            <View
+              style={{
+                marginHorizontal: normalize(10),
+                padding: normalize(10),
+                backgroundColor: colors.darkGray,
+                borderRadius: normalize(10)
+              }}>
+              <AppText style={{textAlign: 'justify'}}>
+                {review?.message}
+              </AppText>
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
 
   const renderTabBar = (props) => (
     <TabBar
@@ -117,7 +296,7 @@ const ProfileScreen = ({navigation, Store}) => {
         backgroundColor: colors.gray,
         borderBottomWidth: 1,
         borderBottomColor: colors.darkGray,
-        elevation: 0
+        elevation: 0,
       }}
     />
   );
@@ -291,6 +470,51 @@ const styleSheet = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.gray,
   },
+  card: {
+    padding: normalize(10),
+    backgroundColor: 'white',
+    height: normalize(80),
+    overflow: 'hidden',
+    paddingHorizontal: normalize(15),
+    marginBottom: normalize(10),
+  },
+  issueCover: {
+    height: normalize(60),
+    width: normalize(60),
+    opacity: 1,
+    position: 'relative',
+    borderRadius: normalize(10),
+    overflow: 'hidden',
+  },
+  issueCover: {
+    height: normalize(60),
+    width: normalize(60),
+    opacity: 1,
+    position: 'relative',
+    borderRadius: normalize(10),
+    overflow: 'hidden',
+  },
+  reviewerPhoto: {
+    height: normalize(60),
+    width: normalize(60),
+    opacity: 1,
+    position: 'relative',
+    borderRadius: normalize(60),
+    overflow: 'hidden',
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: normalize(20),
+    borderRightWidth: normalize(20),
+    borderBottomWidth: normalize(15),
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: colors.darkGray,
+    marginLeft: normalize(20)
+  }
 });
 
 export default inject('Store')(observer(ProfileScreen));
