@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import App from '../../../App';
 import AppModal from '../../../components/AppModal';
 import AsyncStorage from '@react-native-community/async-storage';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 const ProfileScreen = ({navigation, Store}) => {
   const [profileData, setProfileData] = useState(null);
@@ -33,7 +34,6 @@ const ProfileScreen = ({navigation, Store}) => {
   });
 
   useEffect(() => {
-    console.log(Store.selectedProfile);
     Store.setActiveTab('profile');
     const focusListener = navigation.addListener('focus', () => {
       onFocusFunction();
@@ -92,6 +92,50 @@ const ProfileScreen = ({navigation, Store}) => {
   };
 
   const {height} = Dimensions.get('window');
+
+  const HelpsRoute = () => <View style={styleSheet.scene} />;
+
+  const IssuesRoute = () => <View style={styleSheet.scene} />;
+
+  const ReviewsRoute = () => <View style={styleSheet.scene} />;
+
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      activeColor={colors.blue}
+      inactiveColor={colors.navyBlue}
+      indicatorStyle={{backgroundColor: colors.blue}}
+      labelStyle={{
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: normalize(16),
+        textTransform: 'capitalize',
+      }}
+      pressColor={'transparent'}
+      style={{
+        borderTopStartRadius: normalize(30),
+        borderTopEndRadius: normalize(30),
+        backgroundColor: colors.gray,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.darkGray,
+        elevation: 0
+      }}
+    />
+  );
+
+  const initialLayout = {width: Dimensions.get('window').width};
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {key: 'helps', title: 'Helps'},
+    {key: 'issues', title: 'Issues'},
+    {key: 'reviews', title: 'Reviews'},
+  ]);
+
+  const renderScene = SceneMap({
+    helps: HelpsRoute,
+    issues: IssuesRoute,
+    reviews: ReviewsRoute,
+  });
 
   return (
     <>
@@ -214,8 +258,14 @@ const ProfileScreen = ({navigation, Store}) => {
             )}
           </View>
         </View>
-        <View style={styles.screenWrapperWithRadius}>
-          <View style={{flex: 1, minHeight: height - normalize(213)}}></View>
+        <View style={{flex: 1, minHeight: height - normalize(213)}}>
+          <TabView
+            navigationState={{index, routes}}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={initialLayout}
+          />
         </View>
       </ScrollView>
       <BottomNavigation navigation={navigation} />
@@ -225,7 +275,6 @@ const ProfileScreen = ({navigation, Store}) => {
 
 const styleSheet = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
     height: normalize(200),
   },
   avatar: {
@@ -237,6 +286,10 @@ const styleSheet = StyleSheet.create({
     resizeMode: 'cover',
     borderColor: 'white',
     borderWidth: normalize(6),
+  },
+  scene: {
+    flex: 1,
+    backgroundColor: colors.gray,
   },
 });
 
