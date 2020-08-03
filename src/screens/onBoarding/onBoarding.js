@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image, Dimensions} from 'react-native';
+import {View, Image, Dimensions, BackHandler} from 'react-native';
 import styles from '../../helpers/styles';
 import AppText from '../../components/AppText';
 import Swiper from 'react-native-swiper';
@@ -42,6 +42,7 @@ export class OnBoardingScreen extends Component {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', function() {return true})
     const checkStep = async () => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       if (accessToken !== null) {

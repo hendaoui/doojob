@@ -14,6 +14,7 @@ import {apiConfig} from '../../../helpers/apiConfig';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 var empty = require('is-empty');
+import 'mobx-react-lite/batchingForReactNative';
 
 @inject('Store')
 @observer

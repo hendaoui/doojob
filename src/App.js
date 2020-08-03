@@ -6,23 +6,24 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import React, {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import Colors from './helpers/colors';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import OnBoardingScreen from './screens/onBoarding/onBoarding';
-import RNSplashScreen from 'react-native-splash-screen'
+import RNSplashScreen from 'react-native-splash-screen';
 import AuthScreen from './screens/auth/auth';
-import { Provider } from 'mobx-react';
+import {Provider} from 'mobx-react';
 import Store from './Stores/Store';
 import DashboardScreen from './screens/Dashboard/Dashboard';
 import AppCamera from './components/AppCamera';
 import axios from 'axios';
-import { apiConfig } from './helpers/apiConfig';
-import NotificationsScreen from './screens/Dashboard/notifications/notifications'
+import {apiConfig} from './helpers/apiConfig';
+import NotificationsScreen from './screens/Dashboard/notifications/notifications';
 import IssueDetails from './screens/Dashboard/issueDetails/issueDetails';
 import MapsScreen from './screens/Dashboard/map/maps';
+import ProfileScreen from './screens/Dashboard/Profile/profile';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -35,7 +36,6 @@ const MyTheme = {
 const Stack = createStackNavigator();
 
 class App extends React.Component {
-
   componentDidMount() {
     RNSplashScreen.hide();
     axios.defaults.baseURL = apiConfig.baseUrl;
@@ -56,15 +56,19 @@ class App extends React.Component {
               <Stack.Screen name="auth" component={AuthScreen} />
               <Stack.Screen name="dashboard" component={DashboardScreen} />
               <Stack.Screen name="camera" component={AppCamera} />
-              <Stack.Screen name="notifications" component={NotificationsScreen} />
+              <Stack.Screen
+                name="notifications"
+                component={NotificationsScreen}
+              />
               <Stack.Screen name="issueDetails" component={IssueDetails} />
               <Stack.Screen name="maps" component={MapsScreen} />
+              <Stack.Screen name="profile" component={ProfileScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>
       </>
     );
   }
-};
+}
 
 export default App;

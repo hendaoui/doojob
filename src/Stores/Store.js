@@ -7,7 +7,8 @@ class AppStore {
   @observable currentUser = null;
   @observable accessToken = null;
   @observable issuesList = [];
-  @observable activeTab = "home";
+  @observable activeTab = 'home';
+  @observable selectedProfile = this.currentUser?.email;
 
   @action toggleSpinner(state) {
     this.showSpinner = state;
@@ -27,8 +28,9 @@ class AppStore {
 
   @action setCurrentUser(user = null) {
     this.currentUser = user;
+    this.selectedProfile = user?.email;
   }
-  
+
   @action setAccessToken(token = null) {
     this.accessToken = token;
   }
@@ -39,6 +41,10 @@ class AppStore {
 
   @action setActiveTab(tab = 'home') {
     this.activeTab = tab;
+  }
+
+  @action selectProfile(email) {
+    this.selectedProfile = email;
   }
 }
 

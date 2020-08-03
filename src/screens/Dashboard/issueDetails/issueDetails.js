@@ -63,6 +63,12 @@ export default class IssueDetails extends Component {
     this.props.Store.setActiveTab('home');
   };
 
+  showProfile = () => {
+    const {email} = this.state?.issueAuthor;
+    this.props.Store.selectProfile(email);
+    this.props.navigation.navigate('profile');
+  };
+
   render() {
     const {navigation, route} = this.props;
     const {width} = Dimensions.get('window');
@@ -121,14 +127,18 @@ export default class IssueDetails extends Component {
                       marginVertical: normalize(20),
                     }}>
                     <View>
-                      <ImageBackground
-                        style={styleSheet.author}
-                        source={
-                          this.state?.issueAuthor?.photo
-                            ? {uri: this.state?.issueAuthor?.photo}
-                            : require('../../../assets/img/avatar.jpg')
-                        }
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() => this.showProfile()}>
+                        <ImageBackground
+                          style={styleSheet.author}
+                          source={
+                            this.state?.issueAuthor?.photo
+                              ? {uri: this.state?.issueAuthor?.photo}
+                              : require('../../../assets/img/avatar.jpg')
+                          }
+                        />
+                      </TouchableOpacity>
                     </View>
                     <View
                       style={{
@@ -138,7 +148,9 @@ export default class IssueDetails extends Component {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                       }}>
-                      <View>
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() => this.showProfile()}>
                         <AppText style={{fontFamily: 'Poppins-SemiBold'}}>
                           {this.state.issueAuthor?.firstName +
                             ' ' +
@@ -147,7 +159,7 @@ export default class IssueDetails extends Component {
                         <AppText style={{fontSize: normalize(14)}}>
                           {moment(this.state.issue?.createdAt).format('LLL')}
                         </AppText>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{alignSelf: 'center'}}>
                         <TouchableOpacity
                           activeOpacity={0.8}

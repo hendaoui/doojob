@@ -206,7 +206,7 @@ const MapsScreen = ({navigation, Store}) => {
                   <AppText style={{fontSize: normalize(14)}}>
                     {issue?.author?.name}
                   </AppText>
-                  <StarRating ratings={issue?.author?.rating} />
+                  <StarRating ratings={issue?.author?.rating || 0} />
                 </View>
               </View>
             </TouchableOpacity>
