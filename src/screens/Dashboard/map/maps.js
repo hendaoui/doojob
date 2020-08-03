@@ -29,7 +29,7 @@ const MapsScreen = ({navigation, Store}) => {
     const focusListener = navigation.addListener('focus', () => {
       onFocusFunction();
     });
-  }, [navigation]);
+  }, []);
 
   const onFocusFunction = () => {
     Store.setActiveTab('maps');
@@ -51,7 +51,7 @@ const MapsScreen = ({navigation, Store}) => {
             latitude: parseFloat(issue?.location.latitude),
             longitude: parseFloat(issue?.location.longitude),
           }}
-          title={issue?.title}>
+          onPress={(e) => onMarkerPress(e)}>
           <Animated.View style={styleSheet.markerWrap}>
             <Animated.Image
               source={require('../../../assets/img/marker.png')}
@@ -62,6 +62,14 @@ const MapsScreen = ({navigation, Store}) => {
         </MapView.Marker>
       );
     });
+  };
+
+  const onMarkerPress = (mapEventData) => {
+    const markerID = mapEventData._targetInst.return.index;
+
+    let x = markerID * normalize(300) + markerID * 20;
+
+    _scrollView.current.getNode().scrollTo({x: x, y: 0, animated: true});
   };
 
   const interpolations = Store.issuesList.map((issue, index) => {

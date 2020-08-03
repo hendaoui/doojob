@@ -58,7 +58,7 @@ const Header = ({
             />
           )}
         </TouchableOpacity>
-        <AppText style={[styleSheet.text, {fontSize: normalize(20)}, transparent && {color: 'white'},  {bottom: - normalize(5)}, screenTitle && styles.screenTitle]}>
+        <AppText style={[styleSheet.text, {fontSize: normalize(20)}, transparent && {color: 'white'},  {bottom: - normalize(7)}, screenTitle && styles.screenTitle]}>
           {ellipsis(title, 30)}
         </AppText>
       </View>

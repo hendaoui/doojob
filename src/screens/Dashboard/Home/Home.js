@@ -20,8 +20,8 @@ export default class HomeScreen extends Component {
 
   async componentDidMount() {
     this.focusListener = this.props.navigation.addListener('focus', () => {
-      this.onFocusFunction()
-    })
+      this.onFocusFunction();
+    });
     this.props.Store.setActiveTab('home');
     this.props.Store.toggleSpinner(true);
     setTimeout(() => {
@@ -31,7 +31,7 @@ export default class HomeScreen extends Component {
 
   onFocusFunction = () => {
     this.props.Store.setActiveTab('home');
-  }
+  };
 
   getIssuesList = () => {
     this.props.Store.toggleSpinner(true);
@@ -56,7 +56,7 @@ export default class HomeScreen extends Component {
         <AppSpinner />
         <View style={styles.screenWrapperWithRadius}>
           <ScrollView
-            style={styles.scrollView}
+            style={[styles.scrollView, {minHeight: 200}]}
             refreshControl={
               <RefreshControl
                 refreshing={false}
@@ -73,7 +73,7 @@ export default class HomeScreen extends Component {
               screenTitle
               showNotifications
             />
-            {this.props.Store.issuesList ? (
+            {this.props.Store.issuesList.length ? (
               this.props.Store.issuesList?.map((issue) => {
                 return (
                   <IssueCard
@@ -85,7 +85,7 @@ export default class HomeScreen extends Component {
               })
             ) : (
               <>
-                <AppText>No Issues</AppText>
+                <AppText>No Issues Found, please pull to refresh!</AppText>
               </>
             )}
           </ScrollView>

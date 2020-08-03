@@ -30,8 +30,8 @@ export default class IssueDetails extends Component {
   async componentDidMount() {
     this.props.Store.setActiveTab('home');
     this.focusListener = this.props.navigation.addListener('focus', () => {
-      this.onFocusFunction()
-    })
+      this.onFocusFunction();
+    });
     this.props.Store.toggleSpinner(true);
     axios
       .get(apiConfig.API.ISSUE.GET_ISSUE_BY_ID + this.props.route.params.id, {
@@ -61,7 +61,7 @@ export default class IssueDetails extends Component {
 
   onFocusFunction = () => {
     this.props.Store.setActiveTab('home');
-  }
+  };
 
   render() {
     const {navigation, route} = this.props;
@@ -69,9 +69,15 @@ export default class IssueDetails extends Component {
     return (
       <>
         <AppSpinner />
-        <Header nvg={{...navigation}} title={route.params.title} />
         <>
-          <View style={styles.screenWrapper}>
+          <View style={styles.screenWrapperWithRadius}>
+            <View style={{height: normalize(65), paddingRight: normalize(20)}}>
+              <Header
+                nvg={{...navigation}}
+                title={route.params.title}
+                showNotifications
+              />
+            </View>
             {this.state.issue && this.state.issueAuthor && (
               <ScrollView>
                 <Swiper
@@ -150,8 +156,7 @@ export default class IssueDetails extends Component {
                             borderRadius: normalize(50),
                             width: normalize(37),
                           }}
-                          onPress={() => navigation.navigate('maps')}
-                          >
+                          onPress={() => navigation.navigate('maps')}>
                           <Icon
                             name={'map-pin'}
                             size={normalize(20)}
