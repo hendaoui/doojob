@@ -106,7 +106,7 @@ export default class AddIssue extends React.Component {
                         this.setState({ modal: modal });
                         if (this.state.modal.status === "success") {
                             this.props.Store.setMapPurpose(null);
-                            this.props.Store.setissueLocation(null);
+                            this.props.Store.setIssueLocation(null);
                             this.props.navigation.replace('dashboard');
                         }
                     }}

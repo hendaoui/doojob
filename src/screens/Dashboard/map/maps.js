@@ -29,7 +29,6 @@ const MapsScreen = ({ navigation, Store }) => {
 
   useEffect(() => {
     Store.setActiveTab('maps');
-    console.log(">>>>>", Store.mapPurpose);
     const focusListener = navigation.addListener('focus', () => {
       onFocusFunction();
     });
