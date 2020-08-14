@@ -24,6 +24,7 @@ import NotificationsScreen from './screens/Dashboard/notifications/notifications
 import IssueDetails from './screens/Dashboard/issueDetails/issueDetails';
 import MapsScreen from './screens/Dashboard/map/maps';
 import ProfileScreen from './screens/Dashboard/Profile/profile';
+import AddIssue from './screens/Dashboard/AddIssue/AddIssue'
 
 const MyTheme = {
   ...DefaultTheme,
@@ -63,6 +64,7 @@ class App extends React.Component {
               <Stack.Screen name="issueDetails" component={IssueDetails} />
               <Stack.Screen name="maps" component={MapsScreen} />
               <Stack.Screen name="profile" component={ProfileScreen} />
+              <Stack.Screen name="addIssue" component={AddIssue} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

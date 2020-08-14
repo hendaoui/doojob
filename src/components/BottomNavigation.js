@@ -56,7 +56,7 @@ const BottomNavigation = ({navigation, Store}) => {
           }
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigate('addIssue')}>
         <Icon
           name={'plus'}
           size={normalize(25)}

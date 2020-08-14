@@ -19,7 +19,6 @@ import AppSpinner from '../../../components/AppSpinner';
 import StarRating from '../../../components/StarRating';
 import colors from '../../../helpers/colors';
 import Icon from 'react-native-vector-icons/Feather';
-import App from '../../../App';
 import AppModal from '../../../components/AppModal';
 import AsyncStorage from '@react-native-community/async-storage';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';

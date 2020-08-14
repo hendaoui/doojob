@@ -1,7 +1,7 @@
-import React, {Component, useRef, useEffect} from 'react';
+import React, { Component, useRef, useEffect, useState } from 'react';
 import styles from '../../../helpers/styles';
 import AppText from '../../../components/AppText';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   View,
   StyleSheet,
@@ -11,24 +11,37 @@ import {
 import AppSpinner from '../../../components/AppSpinner';
 import Header from '../../../components/header';
 import BottomNavigation from '../../../components/BottomNavigation';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import normalize from 'react-native-normalize';
-import {observer, inject} from 'mobx-react';
-import Animated, {block, call} from 'react-native-reanimated';
+import { observer, inject } from 'mobx-react';
+import Animated, { block, call } from 'react-native-reanimated';
 import colors from '../../../helpers/colors';
 import moment from 'moment';
 import StarRating from '../../../components/StarRating';
 import 'mobx-react-lite/batchingForReactNative';
+import AppButton from '../../../components/AppButton';
+import Geolocation from 'react-native-geolocation-service';
 
-const MapsScreen = ({navigation, Store}) => {
+const MapsScreen = ({ navigation, Store }) => {
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
+  const [currentLocation, setCurrentLocation] = useState()
 
   useEffect(() => {
     Store.setActiveTab('maps');
+    console.log(">>>>>", Store.mapPurpose);
     const focusListener = navigation.addListener('focus', () => {
       onFocusFunction();
     });
+    Geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentLocation({latitude: parseFloat(position?.coords?.latitude), longitude: parseFloat(position?.coords?.longitude)})
+      },
+      (error) => {
+        console.log(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    )
   }, []);
 
   const onFocusFunction = () => {
@@ -36,32 +49,53 @@ const MapsScreen = ({navigation, Store}) => {
   };
 
   const mapMarkers = () => {
-    return Store.issuesList.map((issue, index) => {
-      const scaleStyle = {
-        transform: [
-          {
-            scale: interpolations[index].scale,
-          },
-        ],
-      };
+    if (Store.mapPurpose !== "setIssueLocation") {
+      return Store.issuesList.map((issue, index) => {
+        const scaleStyle = {
+          transform: [
+            {
+              scale: interpolations[index].scale,
+            },
+          ],
+        };
+        return (
+          <MapView.Marker
+            key={issue._id}
+            coordinate={{
+              latitude: parseFloat(issue?.location.latitude),
+              longitude: parseFloat(issue?.location.longitude),
+            }}
+            onPress={(e) => onMarkerPress(e)}>
+            <Animated.View style={styleSheet.markerWrap}>
+              <Animated.Image
+                source={require('../../../assets/img/marker.png')}
+                style={[styleSheet.marker, scaleStyle]}
+                resizeMode="cover"
+              />
+            </Animated.View>
+          </MapView.Marker>
+        );
+      });
+    } else {
       return (
         <MapView.Marker
-          key={issue._id}
+          key={0}
+          draggable
           coordinate={{
-            latitude: parseFloat(issue?.location.latitude),
-            longitude: parseFloat(issue?.location.longitude),
+            latitude: currentLocation?.latitude || 0,
+            longitude: currentLocation?.longitude || 0,
           }}
           onPress={(e) => onMarkerPress(e)}>
           <Animated.View style={styleSheet.markerWrap}>
             <Animated.Image
               source={require('../../../assets/img/marker.png')}
-              style={[styleSheet.marker, scaleStyle]}
+              style={[styleSheet.marker]}
               resizeMode="cover"
             />
           </Animated.View>
         </MapView.Marker>
       );
-    });
+    }
   };
 
   const onMarkerPress = (mapEventData) => {
@@ -69,7 +103,7 @@ const MapsScreen = ({navigation, Store}) => {
 
     let x = markerID * normalize(300) + markerID * 20;
 
-    _scrollView.current.getNode().scrollTo({x: x, y: 0, animated: true});
+    _scrollView.current.getNode().scrollTo({ x: x, y: 0, animated: true });
   };
 
   const interpolations = Store.issuesList.map((issue, index) => {
@@ -84,8 +118,12 @@ const MapsScreen = ({navigation, Store}) => {
       extrapolate: 'clamp',
     });
 
-    return {scale};
+    return { scale };
   });
+
+  const onRegionChange = () => {
+
+  }
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
@@ -94,8 +132,8 @@ const MapsScreen = ({navigation, Store}) => {
     <>
       <AppSpinner />
       <View style={styles.screenWrapperWithRadius}>
-        <View style={{height: normalize(65), paddingRight: normalize(20)}}>
-          <Header nvg={{...navigation}} title="Map" showNotifications />
+        <View style={{ height: normalize(65), paddingRight: normalize(20) }}>
+          <Header nvg={{ ...navigation }} title="Map" showNotifications />
         </View>
         <MapView
           style={{
@@ -119,6 +157,9 @@ const MapsScreen = ({navigation, Store}) => {
             PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             );
+          }}
+          onRegionChangeComplete={(region) => {
+            Store.setIssueLocation(region)
           }}>
           {mapMarkers()}
         </MapView>
@@ -148,7 +189,7 @@ const MapsScreen = ({navigation, Store}) => {
                           const regionTimeout = setTimeout(() => {
                             if (mapIndex !== index) {
                               mapIndex = index;
-                              const {location} = Store.issuesList[index];
+                              const { location } = Store.issuesList[index];
                               _map.current.animateToRegion(
                                 {
                                   latitude: parseFloat(location?.latitude),
@@ -166,9 +207,9 @@ const MapsScreen = ({navigation, Store}) => {
                 },
               },
             ],
-            {useNativeDriver: true},
+            { useNativeDriver: true },
           )}>
-          {Store.issuesList.map((issue, index) => (
+          {Store.mapPurpose !== "setIssueLocation" && Store.issuesList.map((issue, index) => (
             <TouchableOpacity
               style={styleSheet.card}
               key={index}
@@ -184,12 +225,12 @@ const MapsScreen = ({navigation, Store}) => {
                   flex: 1,
                   flexDirection: 'row',
                 }}>
-                <View style={{alignSelf: 'center'}}>
+                <View style={{ alignSelf: 'center' }}>
                   <ImageBackground
                     style={styleSheet.photo}
                     source={
                       issue?.photo1
-                        ? {uri: issue?.photo1}
+                        ? { uri: issue?.photo1 }
                         : require('../../../assets/img/no-image.jpg')
                     }
                   />
@@ -200,10 +241,10 @@ const MapsScreen = ({navigation, Store}) => {
                     marginLeft: normalize(10),
                     alignSelf: 'center',
                   }}>
-                  <AppText style={{fontFamily: 'Poppins-SemiBold'}}>
+                  <AppText style={{ fontFamily: 'Poppins-SemiBold' }}>
                     {issue?.title}
                   </AppText>
-                  <AppText style={{fontSize: normalize(14)}}>
+                  <AppText style={{ fontSize: normalize(14) }}>
                     {issue?.author?.name}
                   </AppText>
                   <StarRating ratings={issue?.author?.rating || 0} />
@@ -211,6 +252,7 @@ const MapsScreen = ({navigation, Store}) => {
               </View>
             </TouchableOpacity>
           ))}
+          {Store.mapPurpose === "setIssueLocation" && (<View style={{ marginLeft: normalize(20), marginBottom: normalize(20) }}><AppButton title="Done" onPress={() => {Store.setMapPurpose(null);navigation.goBack()}} /></View>)}
         </Animated.ScrollView>
       </View>
       <BottomNavigation navigation={navigation} />

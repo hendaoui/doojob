@@ -9,6 +9,7 @@ class AppStore {
   @observable issuesList = [];
   @observable activeTab = 'home';
   @observable selectedProfile = this.currentUser?.email;
+  @observable mapPurpose = "";
 
   @action toggleSpinner(state) {
     this.showSpinner = state;
@@ -45,6 +46,14 @@ class AppStore {
 
   @action selectProfile(email) {
     this.selectedProfile = email;
+  }
+  
+  @action setMapPurpose(purpose) {
+    this.mapPurpose = purpose;
+  }
+
+  @action setIssueLocation(pos) {
+    this.issueLocation = pos;
   }
 }
 
